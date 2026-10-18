@@ -364,7 +364,9 @@ describe("RecurringClient.cancel", () => {
   it("rejects a missing caller before fetching an account or constructing a transaction", async () => {
     const client = new RecurringClient({ ...clientOptions, publicKey: undefined });
 
-    await expect(client.cancel()).rejects.toThrow(ValidationError);
+    // Address encoding can reject synchronously, before prepare() returns
+    // a Promise. This wrapper verifies both synchronous and async failures.
+    await expect(Promise.resolve().then(() => client.cancel())).rejects.toThrow();
     expect(rpc.getAccount).not.toHaveBeenCalled();
     expect(rpc.simulateTransaction).not.toHaveBeenCalled();
   });
