@@ -1,12 +1,7 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-  # The integration job below only runs on these two.
-  schedule:
-    - cron: "17 5 * * *"
+  # Fork-only: run manually to avoid scheduled/push CI notifications.
   workflow_dispatch:
 
 concurrency:
